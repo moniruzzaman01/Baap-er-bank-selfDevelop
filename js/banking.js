@@ -23,8 +23,12 @@ function handleBalance(InputAmountField, isDeposit) {
         const newBalance = previousBalance + amountInput
         balanceField.innerText = newBalance
     } else {
-        const newBalance = previousBalance - amountInput
-        balanceField.innerText = newBalance
+        if (amountInput <= previousBalance) {
+            const newBalance = previousBalance - amountInput
+            balanceField.innerText = newBalance
+        } else {
+            document.getElementById('alert').removeAttribute('hidden')
+        }
     }
 }
 // button's work handle
@@ -48,16 +52,27 @@ document.getElementById('deposit-btn').addEventListener('click', function () {
     handleDepositAndWithdraw('deposit-total', 'deposit-input', true)
     btnValidation('deposit-btn', 'deposit-input')
 })
+
 document.getElementById('deposit-input').addEventListener('keyup', function () {
     btnValidation('deposit-btn', 'deposit-input')
 })
 
 
+
 // For Withdraw Field
 document.getElementById('withdraw-btn').addEventListener('click', function () {
-    handleDepositAndWithdraw('withdraw-total', 'withdraw-input', false)
+    const withdrawField = document.getElementById('withdraw-input')
+    const withdraw = parseInt(withdrawField.value)
+    const balanceField = document.getElementById('balance')
+    const balance = parseInt(balanceField.innerText)
+    if (withdraw <= balance) {
+        console.log('you can')
+        handleDepositAndWithdraw('withdraw-total', 'withdraw-input', false)
+    }
+
     btnValidation('withdraw-btn', 'withdraw-input')
 })
+
 document.getElementById('withdraw-input').addEventListener('keyup', function () {
     btnValidation('withdraw-btn', 'withdraw-input')
 })
